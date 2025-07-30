@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>System Error</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: black;
+    }
+    body {
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    #flash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
+
+  <div id="flash"></div>
+
+  <script>
+    // Mencegah keluar/back
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+
+    // Efek flash layar
+    const flash = document.getElementById("flash");
+    let flashInterval = setInterval(() => {
+      flash.style.opacity = flash.style.opacity === "0" ? "1" : "0";
+    }, 100);
+
+    // Getaran
+    if (navigator.vibrate) {
+      let interval = setInterval(() => navigator.vibrate(500), 500);
+      setTimeout(() => clearInterval(interval), 30000); // stop after 30s
+    }
+
+    // Setelah 30 detik, stop semuanya
+    setTimeout(() => {
+      clearInterval(flashInterval);
+      flash.style.opacity = "0";
+      alert("YOU'VE BEEN PRANKED!");
+    }, 30000);
+  </script>
+
+</body>
+</html>
